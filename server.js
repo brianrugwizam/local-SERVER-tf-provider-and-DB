@@ -1,12 +1,12 @@
 
 const fs = require('fs');
 const jsonServer = require('json-server');
-const db = require('../openAPI-server/db.json')
+const db = require('../openAPI-server/db.json');
 const server = jsonServer.create();
-const router = jsonServer.router('./../openAPI-server/db.json');
+const router = jsonServer.router('../openAPI-server/db.json');
 const middlewares = jsonServer.defaults();
 const port = process.env.PORT || 5000;
-const persistentStorage = process.env.STORE || false;
+const persistentStorage = process.env.STORE || true;
 let idCounter = 0;
 
 server.use(jsonServer.bodyParser);
@@ -51,17 +51,32 @@ server.get('/pets', (req, res) => {
 server.get('/pets/:id', (req, res) => {
 	console.log(`GET /pets/${req.params.id}`);
 	statusCode = 200;
+	result = db["pets"].find((x) => {return x.id == req.params.id})
+	console.log(result)
+	if (result == undefined) {
+		statuscode = 404;
+		responseBody = {
+			"_meta": {
+					"traceId": "zKRRMUUvi"
+				},
+			"data": {},
+			"errors": {
+				"msg": "pet with id " + req.params.id + " not found"
+			}
+		};
+	} else {
 	responseBody = {
 		"_meta": {
 				"traceId": "zKRRMUUvi"
 			},
 		"data": {
-				"id": "54b39657-4362-4af6-949b-dba49911a21a",
-				"name": "ZXl",
-				"tag": "KFFhEj"
+				"id": result.id,
+				"name": result.name,
+				"tag": ""
 		},
 		"errors": {}
 };
+	}
 	
 	res.status(statusCode).json(responseBody);
 });
