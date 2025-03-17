@@ -124,6 +124,21 @@ server.post('/pets', (req, res) => {
 	res.status(statusCode).json(responseBody);
 });
 
+server.delete('/pets/:id', (req, res) => {
+	console.log(`DELETE /pets/${req.params.id}`);
+
+	let petIndex = db.pets.findIndex(p => p.id === req.params.id);
+
+	if (petIndex === -1) {
+		return res.status(404).json({ error: "Pet not found" });
+	}
+
+	db.pets.splice(petIndex, 1);
+	checkWriteToDb();
+	
+	res.status(204).send();
+})
+
 server.use(middlewares);
 server.use(router);
 server.listen(port);

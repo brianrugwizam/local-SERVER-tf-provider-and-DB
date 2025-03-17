@@ -21,7 +21,7 @@
     },
     {
       "id": "4",
-      "name": "Fluffy",
+      "name": "Fluffy43",
       "tag": ""
     },
     {
@@ -36,7 +36,7 @@
     },
     {
       "id": "7",
-      "name": "Djip the Big Oranje Dog",
+      "name": "Djip the Big Orange Dawg",
       "tag": ""
     },
     {
@@ -67,6 +67,11 @@
     {
       "id": "13",
       "name": "ponjo",
+      "tag": ""
+    },
+    {
+      "id": "1",
+      "name": "Buddy",
       "tag": ""
     }
   ]
