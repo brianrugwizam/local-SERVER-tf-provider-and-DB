@@ -81,6 +81,23 @@ server.get('/pets/:id', (req, res) => {
 	res.status(statusCode).json(responseBody);
 });
 
+server.put('/pets/:id', (req, res) => {
+	console.log(`PUT /pets/${req.params.id} with body ${JSON.stringify(req.body)}`);
+
+	let petIndex = db.pets.findIndex(p => p.id === req.params.id);
+
+	if (petIndex === -1) {
+		return res.status(404).json({error: "Pet not found"});
+	}
+
+	db.pets[petIndex].name = req.body.name || db.pets[petIndex].name;
+	db.pets[petIndex].tag = req.body.tag || db.pets[petIndex].tag;
+
+	checkWriteToDb();
+
+	res.json({data: db.pets[petIndex]});
+})
+
 server.post('/pets', (req, res) => {
 	console.log(`POST /pets with body ${JSON.stringify(req.body)}`);
 	statusCode = 201;

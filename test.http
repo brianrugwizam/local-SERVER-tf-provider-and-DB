@@ -1,2 +1,2 @@
-GET  http://localhost:5000/pets/7
+GET http://localhost:5000/pets/7
 Content-Type: application/json
