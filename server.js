@@ -130,7 +130,9 @@ server.delete('/pets/:id', (req, res) => {
 	let petIndex = db.pets.findIndex(p => p.id === req.params.id);
 
 	if (petIndex === -1) {
-		return res.status(404).json({ error: "Pet not found" });
+		return res.status(404).json(
+			{ error: "Pet not found" }
+		);
 	}
 
 	db.pets.splice(petIndex, 1);
