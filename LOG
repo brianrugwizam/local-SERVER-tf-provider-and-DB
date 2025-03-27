@@ -1,0 +1,143 @@
+package controllers
+
+import (
+	"context"
+
+	"dev.azure.com/INGCDaaS/IngOne/_git/P11005-IPC-Go.git/trace/v2/ipctrace"
+	"gorm.io/gorm"
+
+)
+
+// Compile-time interface checks
+var _ PetsAPI = new(PetsController)
+
+// PetsController implements the PetsAPI and will convert incoming http objects into
+// domain models that are passed to the service layer. The type is exported, but (almost) all its methods are not, as these
+// are only expected to be used in the associated .gen.go file.
+//
+// Please note that the `RegisterRoutes` method is defined on this type in the .gen.go file, which is responsible for actually
+// connecting the routes to the implementations that you've written.
+type PetsController struct {
+	/**
+	 * This is the place where you define your own dependencies, like services that house business
+	 * logic. You can then inject these dependencies from the api.go.
+	 *
+	 * For example:
+	 *
+	 * // PetsService is used to fetch and store data in the backend
+	 * PetsService PetsServiceInterface
+	 */
+	 Database *gorm.DB
+}
+
+// ListPets implements PetsAPI.ListPets, for the GET /pets route.
+// Response objects and errors can be found in the .gen.go file with the 'ListPets' prefix.
+func (p *PetsController) ListPets(ctx context.Context, _ ListPetsParams) (ListPetsSuccess, ListPetsError) {
+	ctx, span := ipctrace.StartNewSpan(ctx)
+	log := ipctrace.Logger(ctx)
+	defer span.End()
+
+	/**
+	 * Here you may implement the route, using the input values defined in your openapi specification (if any), converting them
+	 * into domain objects and then sending them to your backend services for further processing.  At the end, you decide to
+	 * return either a success or an error response, using the objects generated in the .gen.go file from your openapi.yaml.
+	 */
+	
+	query := p.Database.Model(Pet{})
+
+	var result []Pet
+	query.Find(&result)
+
+	return ListPetsOk{
+		Meta: DefaultPaginatedMeta{
+			Limit:	queryConfig.GetLimit(),
+			Total:	int64(len(result)),
+		},
+		Data: result,
+	}, nil
+	log.Error("PetsController.ListPets is not implemented")
+	panic("PetsController.ListPets is not implemented")
+}
+
+// CreatePet implements PetsAPI.CreatePet, for the POST /pets route.
+// Response objects and errors can be found in the .gen.go file with the 'CreatePet' prefix.
+func (p *PetsController) CreatePet(ctx context.Context, _ CreatePetBody) (CreatePetSuccess, CreatePetError) {
+	ctx, span := ipctrace.StartNewSpan(ctx)
+	defer span.End()
+
+	CreatePet := Pet{
+		ID: body.Id,
+		Name: body.Name,
+	}
+
+	p.Database.Create(CreatePet)
+	/**
+	 * Here you may implement the route, using the input values defined in your openapi specification (if any), converting them
+	 * into domain objects and then sending them to your backend services for further processing.  At the end, you decide to
+	 * return either a success or an error response, using the objects generated in the .gen.go file from your openapi.yaml.
+	 */
+	 return CreatePetCreated{
+		Data: CreatePet,
+	 }, nil
+}
+
+// DeletePet implements PetsAPI.DeletePet, for the DELETE /pets/{id} route.
+// Response objects and errors can be found in the .gen.go file with the 'DeletePet' prefix.
+func (p *PetsController) DeletePet(ctx context.Context, _ DeletePetParams) (DeletePetSuccess, DeletePetError) {
+	ctx, span := ipctrace.StartNewSpan(ctx)
+	log := ipctrace.Logger(ctx)
+	defer span.End()
+
+	/**
+	 * Here you may implement the route, using the input values defined in your openapi specification (if any), converting them
+	 * into domain objects and then sending them to your backend services for further processing.  At the end, you decide to
+	 * return either a success or an error response, using the objects generated in the .gen.go file from your openapi.yaml.
+	 */
+	query := p.Database.Model(Pet{})
+
+	var result []Pet
+	query.Find(&result)
+
+	p.Database.Delete(DeletePet)
+	return DeletePetNoContent{
+		
+	},
+
+
+	log.Error("PetsController.DeletePet is not implemented")
+	panic("PetsController.DeletePet is not implemented")
+}
+
+// ShowPetByID implements PetsAPI.ShowPetByID, for the GET /pets/{id} route.
+// Response objects and errors can be found in the .gen.go file with the 'ShowPetByID' prefix.
+func (p *PetsController) ShowPetByID(ctx context.Context, _ ShowPetByIDParams) (ShowPetByIDSuccess, ShowPetByIDError) {
+	ctx, span := ipctrace.StartNewSpan(ctx)
+	log := ipctrace.Logger(ctx)
+	defer span.End()
+
+	/**
+	 * Here you may implement the route, using the input values defined in your openapi specification (if any), converting them
+	 * into domain objects and then sending them to your backend services for further processing.  At the end, you decide to
+	 * return either a success or an error response, using the objects generated in the .gen.go file from your openapi.yaml.
+	 */
+
+	log.Error("PetsController.ShowPetByID is not implemented")
+	panic("PetsController.ShowPetByID is not implemented")
+}
+
+// UpdatePet implements PetsAPI.UpdatePet, for the PUT /pets/{id} route.
+// Response objects and errors can be found in the .gen.go file with the 'UpdatePet' prefix.
+func (p *PetsController) UpdatePet(ctx context.Context, _ UpdatePetParams) (UpdatePetSuccess, UpdatePetError) {
+	ctx, span := ipctrace.StartNewSpan(ctx)
+	log := ipctrace.Logger(ctx)
+	defer span.End()
+
+	/**
+	 * Here you may implement the route, using the input values defined in your openapi specification (if any), converting them
+	 * into domain objects and then sending them to your backend services for further processing.  At the end, you decide to
+	 * return either a success or an error response, using the objects generated in the .gen.go file from your openapi.yaml.
+	 */
+
+	log.Error("PetsController.UpdatePet is not implemented")
+	panic("PetsController.UpdatePet is not implemented")
+}
